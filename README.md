@@ -57,6 +57,7 @@ uv run python -c "import runpy; ns = runpy.run_path('tests/test_smoke.py'); ns['
 
 ## 4. 项目目录骨架
 
+```text
 RAG-QAE-System/
 ├── README.md                    # 项目入口说明：目标、启动方式、核心链路
 ├── docs/                        # 项目设计文档
@@ -140,3 +141,4 @@ RAG-QAE-System/
 ├── migrations/                  # 数据库表创建脚本
 ├── scripts/                     # 建分区、导入测试数据、启动fastapi服务等脚本
 └── tests/                       # 单元测试和集成测试
+```
