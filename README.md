@@ -20,9 +20,7 @@ MVP 阶段明确去除异步模块，同步执行后返回最终状态。不优�
 
 ## 3. 当前骨架运行方式
 
-当前代码骨架先使用内存 DAO 和 mock domain strategy 跑通三条链路，真实 PostgreSQL、向量检索和模型调用后续可以从 `dao/` 与 `infra/` 层替换。
-
-项目已切换为 uv 管理 Python 环境和依赖，依赖以 `pyproject.toml` / `uv.lock` 为准。
+项目使用 uv 管理 Python 环境和依赖，依赖以 `pyproject.toml` / `uv.lock` 为准。
 
 首次准备环境：
 
