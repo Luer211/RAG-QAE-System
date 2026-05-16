@@ -55,6 +55,20 @@ uv run python -c "import runpy; ns = runpy.run_path('tests/test_smoke.py'); ns['
 
 ## 4. 项目架构图
 
+**总览架构图**
+```mermaid
+flowchart LR
+    API[API Layer] --> Service[Service Layer]
+    Service --> Pipeline[Pipeline Layer]
+    Pipeline --> Step[Step Layer]
+    Step --> Domain[Domain Layer]
+    Step --> DAO[DAO Layer]
+    Domain --> Infra[Infra Layer]
+    DAO --> PG[(PostgreSQL)]
+    Infra --> External[LLM / Embedding / Vector Search]
+```
+
+**详细架构图**
 ```mermaid
 flowchart TD
     Client[HTTP Client / Frontend / CLI] --> API[FastAPI Router<br/>app/api/v1]
@@ -171,7 +185,6 @@ flowchart TD
     EmbeddingClient --> EmbeddingProvider[Embedding Model Provider]
     LLMClient --> LLMProvider[LLM Provider]
 ```
-
 
 ## 5. 项目目录骨架
 
