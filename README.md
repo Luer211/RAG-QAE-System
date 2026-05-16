@@ -53,7 +53,127 @@ uv run python -c "import runpy; ns = runpy.run_path('tests/test_smoke.py'); ns['
 
 
 
-## 4. 项目目录骨架
+## 4. 项目架构图
+
+```mermaid
+flowchart TD
+    Client[HTTP Client / Frontend / CLI] --> API[FastAPI Router<br/>app/api/v1]
+    API --> Schemas[Pydantic Schemas<br/>app/schemas]
+    API --> Services[Service Layer<br/>app/services]
+
+    subgraph Services[Service Layer]
+        ReleaseService[ReleaseService]
+        IngestService[IngestService]
+        RetrievalService[RetrievalService]
+        EvaluationService[EvaluationService]
+    end
+
+    subgraph Pipelines[Pipeline Layer<br/>app/pipelines]
+        IngestPipeline[IngestPipeline]
+        RetrievalPipeline[RetrievalPipeline]
+        EvaluationPipeline[EvaluationPipeline]
+    end
+
+    ReleaseService --> ReleaseDao
+    IngestService --> IngestPipeline
+    RetrievalService --> RetrievalPipeline
+    EvaluationService --> EvaluationPipeline
+
+    subgraph IngestionSteps[Ingestion Steps<br/>app/steps/ingestion]
+        CleanStep[CleanDocumentsStep]
+        ChunkStep[ChunkDocumentsStep]
+        EmbedStep[EmbedChunksStep]
+        MarkReadyStep[MarkReleaseReadyStep]
+    end
+
+    IngestPipeline --> CleanStep --> ChunkStep --> EmbedStep --> MarkReadyStep
+
+    subgraph RetrievalSteps[Retrieval Steps<br/>app/steps/retrieval]
+        CreateLogStep[CreateRetrievalLogStep]
+        RewriteStep[RewriteQueryStep]
+        RetrieveStep[RetrieveChunksStep]
+        RerankStep[RerankChunksStep]
+        GenerateStep[GenerateAnswerStep]
+    end
+
+    RetrievalPipeline --> CreateLogStep --> RewriteStep --> RetrieveStep --> RerankStep --> GenerateStep
+
+    subgraph EvaluationSteps[Evaluation Steps<br/>app/steps/evaluation]
+        CreateRunStep[CreateEvaluationRunStep]
+        RunItemsStep[RunEvaluationItemsStep]
+        JudgeItemsStep[JudgeEvaluationItemsStep]
+        FinalizeRunStep[FinalizeEvaluationRunStep]
+        MetricsStep[CreateEvaluationMetricsStep]
+    end
+
+    EvaluationPipeline --> CreateRunStep --> RunItemsStep --> JudgeItemsStep --> FinalizeRunStep --> MetricsStep
+    RunItemsStep --> RetrievalPipeline
+
+    subgraph Domain[Domain Strategy Layer<br/>app/domain]
+        CleaningDomain[Cleaning Domain]
+        ChunkingDomain[Chunking Domain]
+        EmbeddingDomain[Embedding Domain]
+        QueryRewriteDomain[Query Rewrite Domain]
+        RetrievalDomain[Retrieval Domain]
+        RerankingDomain[Reranking Domain]
+        GenerationDomain[Generation Domain]
+        JudgingDomain[Judging Domain]
+    end
+
+    CleanStep --> CleaningDomain
+    ChunkStep --> ChunkingDomain
+    EmbedStep --> EmbeddingDomain
+    RewriteStep --> QueryRewriteDomain
+    RetrieveStep --> RetrievalDomain
+    RerankStep --> RerankingDomain
+    GenerateStep --> GenerationDomain
+    JudgeItemsStep --> JudgingDomain
+
+    subgraph DAO[DAO Layer<br/>app/dao]
+        ReleaseDao[ReleaseDao]
+        PartitionDao[PartitionDao]
+        DocumentDao[DocumentDao]
+        ChunkDao[ChunkDao]
+        EmbeddingDao[EmbeddingDao]
+        RetrievalLogDao[RetrievalLogDao]
+        EvaluationDao[EvaluationDao]
+    end
+
+    ReleaseService --> PartitionDao
+    CleanStep --> DocumentDao
+    ChunkStep --> DocumentDao
+    ChunkStep --> ChunkDao
+    EmbedStep --> ChunkDao
+    EmbedStep --> EmbeddingDao
+    MarkReadyStep --> ReleaseDao
+    CreateLogStep --> RetrievalLogDao
+    RewriteStep --> RetrievalLogDao
+    RerankStep --> RetrievalLogDao
+    GenerateStep --> RetrievalLogDao
+    EvaluationSteps --> EvaluationDao
+
+    subgraph Infra[Infra Adapters<br/>app/infra]
+        LLMClient[LLM Client]
+        EmbeddingClient[Embedding Client]
+        VectorSearchClient[Vector Search Client]
+    end
+
+    EmbeddingDomain --> EmbeddingClient
+    QueryRewriteDomain --> LLMClient
+    GenerationDomain --> LLMClient
+    JudgingDomain --> LLMClient
+    RetrievalDomain --> VectorSearchClient
+
+    DAO --> PostgreSQL[(PostgreSQL<br/>release_id partitions)]
+    VectorSearchClient --> PGVector[(pgvector / full-text index)]
+    PGVector --> PostgreSQL
+
+    EmbeddingClient --> EmbeddingProvider[Embedding Model Provider]
+    LLMClient --> LLMProvider[LLM Provider]
+```
+
+
+## 5. 项目目录骨架
 
 ```text
 RAG-QAE-System/
