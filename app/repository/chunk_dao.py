@@ -1,7 +1,7 @@
 ﻿from __future__ import annotations
 from app.core.ids import new_uuid
-from app.dao.memory_store import MemoryStore
-from app.dao.records import ChunkCreate, ChunkRecord
+from app.repository.memory_store import MemoryStore
+from app.repository.records import ChunkCreate, ChunkRecord
 
 
 class ChunkDao:

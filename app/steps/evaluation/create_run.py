@@ -1,7 +1,7 @@
 ﻿from __future__ import annotations
 from dataclasses import asdict
 
-from app.dao.evaluation_dao import EvaluationDao
+from app.repository.evaluation_dao import EvaluationDao
 from app.pipelines.evaluation.models import EvaluationState
 
 

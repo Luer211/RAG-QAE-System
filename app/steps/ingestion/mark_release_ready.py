@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
 from app.core.enums import ReleaseStatus
-from app.dao.release_dao import ReleaseDao
+from app.repository.release_dao import ReleaseDao
 from app.pipelines.ingestion.models import IngestPipelineOutput, IngestState
 
 

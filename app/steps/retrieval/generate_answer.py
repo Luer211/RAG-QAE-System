@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
-from app.dao.records import AnswerCitationCreate
-from app.dao.retrieval_log_dao import RetrievalLogDao
+from app.repository.records import AnswerCitationCreate
+from app.repository.retrieval_log_dao import RetrievalLogDao
 from app.domain.generation import GenerateAnswerInput, GenerationDomain
 from app.pipelines.retrieval.models import RetrievalPipelineOutput, RetrievalState
 

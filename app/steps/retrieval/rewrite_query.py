@@ -1,5 +1,5 @@
 ﻿from __future__ import annotations
-from app.dao.retrieval_log_dao import RetrievalLogDao
+from app.repository.retrieval_log_dao import RetrievalLogDao
 from app.domain.query_rewrite import QueryRewriteDomain, RewriteQueryInput
 from app.pipelines.retrieval.models import RetrievalState
 

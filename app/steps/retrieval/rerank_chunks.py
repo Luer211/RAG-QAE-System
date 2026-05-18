@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
-from app.dao.records import RetrievalItemCreate
-from app.dao.retrieval_log_dao import RetrievalLogDao
+from app.repository.records import RetrievalItemCreate
+from app.repository.retrieval_log_dao import RetrievalLogDao
 from app.domain.reranking import RerankChunksInput, RerankDomain
 from app.pipelines.retrieval.models import RetrievalState
 

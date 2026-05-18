@@ -1,9 +1,9 @@
 ﻿from __future__ import annotations
-from app.dao.chunk_dao import ChunkDao
-from app.dao.document_dao import DocumentDao
-from app.dao.partition_dao import PartitionDao
-from app.dao.records import ChunkRecord, DocumentRecord, ReleaseRecord
-from app.dao.release_dao import ReleaseDao
+from app.repository.chunk_dao import ChunkDao
+from app.repository.document_dao import DocumentDao
+from app.repository.partition_dao import PartitionDao
+from app.repository.records import ChunkRecord, DocumentRecord, ReleaseRecord
+from app.repository.release_dao import ReleaseDao
 from app.services.dto.release import (
     ChunkServiceOutput,
     CreateReleaseServiceInput,

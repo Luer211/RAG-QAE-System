@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
-from app.dao.evaluation_dao import EvaluationDao
-from app.dao.records import EvaluationItemCreate
+from app.repository.evaluation_dao import EvaluationDao
+from app.repository.records import EvaluationItemCreate
 from app.pipelines.evaluation.models import EvaluationState
 from app.pipelines.retrieval import RetrievalPipeline, RetrievalPipelineInput
 

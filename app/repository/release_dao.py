@@ -2,8 +2,8 @@
 from app.core.enums import ReleaseStatus
 from app.core.errors import ConflictError, NotFoundError
 from app.core.ids import new_id
-from app.dao.memory_store import MemoryStore
-from app.dao.records import ReleaseRecord
+from app.repository.memory_store import MemoryStore
+from app.repository.records import ReleaseRecord
 
 
 class ReleaseDao:

@@ -1,8 +1,8 @@
 ﻿from __future__ import annotations
 from app.core.errors import NotFoundError
 from app.core.ids import new_id
-from app.dao.memory_store import MemoryStore
-from app.dao.records import (
+from app.repository.memory_store import MemoryStore
+from app.repository.records import (
     AnswerCitationCreate,
     AnswerCitationRecord,
     RetrievalItemCreate,

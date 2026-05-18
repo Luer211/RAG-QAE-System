@@ -1,5 +1,5 @@
 ﻿from __future__ import annotations
-from app.dao.memory_store import MemoryStore
+from app.repository.memory_store import MemoryStore
 
 
 class PartitionDao:

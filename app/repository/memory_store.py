@@ -1,7 +1,7 @@
 ﻿from __future__ import annotations
 from dataclasses import dataclass, field
 
-from app.dao.records import (
+from app.repository.records import (
     AnswerCitationRecord,
     ChunkEmbeddingRecord,
     ChunkRecord,
