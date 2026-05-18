@@ -6,16 +6,16 @@ import os
 
 @dataclass(frozen=True)
 class Settings:
-    app_name: str = "RAG-QAE-System"
-    api_prefix: str = "/api/v1"
-    environment: str = "local"
-
+    app_name: str
+    api_prefix: str
+    environment: str
+    database_url: str
 
 @lru_cache
 def get_settings() -> Settings:
     return Settings(
-        app_name=os.getenv("APP_NAME", "RAG-QAE-System"),
-        api_prefix=os.getenv("API_PREFIX", "/api/v1"),
-        environment=os.getenv("APP_ENV", "local"),
+        app_name=os.getenv("APP_NAME"),
+        api_prefix=os.getenv("API_PREFIX"),
+        environment=os.getenv("APP_ENV"),
+        database_url=os.getenv("DATABASE_URL")
     )
-
