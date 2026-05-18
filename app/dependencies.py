@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
 from app.dao.chunk_dao import ChunkDao
-from app.dao.db import get_store
+from app.dao.db import SessionLocal
 from app.dao.document_dao import DocumentDao
 from app.dao.embedding_dao import EmbeddingDao
 from app.dao.evaluation_dao import EvaluationDao
@@ -43,15 +43,14 @@ from app.steps.retrieval import (
     RewriteQueryStep,
 )
 
-_store = get_store()
 
-release_dao = ReleaseDao(_store)
-partition_dao = PartitionDao(_store)
-document_dao = DocumentDao(_store)
-chunk_dao = ChunkDao(_store)
-embedding_dao = EmbeddingDao(_store)
-retrieval_log_dao = RetrievalLogDao(_store)
-evaluation_dao = EvaluationDao(_store)
+release_dao = ReleaseDao(SessionLocal)
+partition_dao = PartitionDao(SessionLocal)
+document_dao = DocumentDao(SessionLocal)
+chunk_dao = ChunkDao(SessionLocal)
+embedding_dao = EmbeddingDao(SessionLocal)
+retrieval_log_dao = RetrievalLogDao(SessionLocal)
+evaluation_dao = EvaluationDao(SessionLocal)
 
 clean_domain = CleanDomain(CleanerStrategyFactory())
 chunk_domain = ChunkDomain(ChunkerStrategyFactory())

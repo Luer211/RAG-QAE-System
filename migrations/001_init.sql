@@ -138,6 +138,7 @@ CREATE TABLE answer_citations (
     release_id VARCHAR(64) NOT NULL,
     chunk_id UUID NOT NULL,
     citation_order INTEGER NOT NULL,
+    content TEXT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_answer_citations_log
         FOREIGN KEY (retrieval_log_id, release_id)

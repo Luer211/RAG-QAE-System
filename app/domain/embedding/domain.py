@@ -13,7 +13,7 @@ class EmbeddingStrategy(Protocol):
 
 class MockEmbeddingStrategy:
     embedding_model = "mock_model"
-    embedding_dim = 8
+    embedding_dim = 1536
 
     async def embed(self, input_data: EmbedChunksInput) -> EmbedChunksOutput:
         embeddings = [
