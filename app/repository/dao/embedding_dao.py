@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from app.core.errors import ConflictError
 from app.core.ids import new_uuid
+from app.repository.models.chunk import ChunkOrm
 from app.repository.models.chunk_embedding import ChunkEmbeddingOrm
-from app.repository.records import EmbeddingCreate
+from app.repository.records import EmbeddingCreate, VectorSearchRecord
 
 
 class EmbeddingDao:
@@ -36,3 +38,14 @@ class EmbeddingDao:
             return [record.id for record in records]
         except IntegrityError as exc:
             raise ConflictError("Failed to insert chunk embeddings") from exc
+
+    async def search_similar_chunks(
+            self,
+            release_id: str,
+            query_vector: list[float],
+            embedding_model: str,
+            top_k: int,
+    ) -> list[VectorSearchRecord]:
+        # Todo: 向量近似搜索
+        return []
+    

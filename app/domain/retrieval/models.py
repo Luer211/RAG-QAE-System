@@ -21,8 +21,8 @@ class RetrievedChunk:
 
 @dataclass(frozen=True)
 class RetrieveChunksInput:
+    release_id: str
     query: str
-    candidates: list[RetrievalCandidate]
     config: DomainStrategyConfig
 
 

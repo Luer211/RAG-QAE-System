@@ -4,7 +4,7 @@ import os
 
 import httpx
 
-
+"""负责连接 client 供业务使用"""
 class EmbeddingClient:
     def __init__(self, base_url: str, api_key: str):
         self.base_url = base_url

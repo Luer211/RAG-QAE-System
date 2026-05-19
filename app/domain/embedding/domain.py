@@ -34,7 +34,7 @@ class OpenAIEmbeddingStrategy:
                     embedding_dim=self.embedding_dim,
                     vector=vector
                 )
-                for chunk, vector in zip[input_data.chunks, vectors]
+                for chunk, vector in zip(input_data.chunks, vectors)
             ]
         )
 

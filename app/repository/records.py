@@ -75,6 +75,15 @@ class ChunkEmbeddingRecord:
 
 
 @dataclass
+class VectorSearchRedord:
+    chunk_id: str
+    content: str
+    distance: float
+    score: float
+
+
+
+@dataclass
 class RetrievalLogRecord:
     id: str
     release_id: str

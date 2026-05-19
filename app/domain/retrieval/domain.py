@@ -1,8 +1,10 @@
 ﻿from __future__ import annotations
 from typing import Protocol
 
+from app.infra.embedding.client import EmbeddingClient
 from app.core.errors import InvalidStateError
 from app.domain.retrieval.models import RetrieveChunksInput, RetrieveChunksOutput, RetrievedChunk
+from app.repository.dao.embedding_dao import EmbeddingDao
 
 
 class RetrievalStrategy(Protocol):
@@ -10,38 +12,59 @@ class RetrievalStrategy(Protocol):
         ...
 
 
-class MockRetrievalStrategy:
+class PgVectorRetrievalStrategy:
+    def __init__(
+        self,
+        embedding_client: EmbeddingClient,
+        embedding_dao: EmbeddingDao,
+        # Todo: 这里需要我们考虑一件事情，model的选择究竟应该怎么做
+        embedding_model: str = "open_embedding_small",
+    ):
+        self.embedding_client = embedding_client
+        self.embedding_dao = embedding_dao
+        self.embedding_model = embedding_model
+
     async def retrieve(self, input_data: RetrieveChunksInput) -> RetrieveChunksOutput:
-        query_terms = {term.lower() for term in input_data.query.split() if term}
-        scored: list[tuple[float, str, str]] = []
-        for candidate in input_data.candidates:
-            content_terms = {term.lower() for term in candidate.content.split() if term}
-            overlap = len(query_terms & content_terms)
-            score = float(overlap) if query_terms else 0.0
-            if score > 0 or not query_terms:
-                scored.append((score, candidate.chunk_id, candidate.content))
+        top_k = int(input_data.config.params.get("top_k", 10))
+        self.embedding_model = input_data.config.params.get(
+            "embedding_model",
+            self.embedding_model,
+        )
 
-        if not scored:
-            scored = [(0.0, candidate.chunk_id, candidate.content) for candidate in input_data.candidates[:5]]
+        query_vectors = await self.embedding_client.embed(
+            texts=[input_data.query],
+            model=self.embedding_model,
+        )
+        query_vector = query_vectors[0]
 
-        scored.sort(key=lambda item: item[0], reverse=True)
-        items = [
-            RetrievedChunk(
-                chunk_id=chunk_id,
-                content=content,
-                source_type="mock_text",
-                raw_score=score,
-                rank_before_rerank=index + 1,
-            )
-            for index, (score, chunk_id, content) in enumerate(scored[:10])
-        ]
-        return RetrieveChunksOutput(items=items)
+        rows = await self.embedding_dao.search_similar_chunks(
+            release_id=input_data.release_id,
+            query_vector=query_vector,
+            embedding_model=self.embedding_model,
+            top_k=top_k
+        )
+
+        return RetrieveChunksOutput(
+            items=[
+                RetrievedChunk(
+                    chunk_id=row.chunk_id,
+                    content=row.content,
+                    source_type="pgvector",
+                    raw_score=row.score,
+                    rank_before_rerank=index+1,
+                )
+                for index, row in enumerate(rows)
+            ]
+        )
 
 
 class RetrievalStrategyFactory:
-    def __init__(self) -> None:
+    def __init__(self, embedding_client=None, embedding_dao=None) -> None:
         self._strategies: dict[str, RetrievalStrategy] = {
-            "mock_retrieval": MockRetrievalStrategy(),
+            "pgvector_retrieval": PgVectorRetrievalStrategy(
+                embedding_client=embedding_client,
+                embedding_dao=embedding_dao,
+            )
         }
 
     def get(self, strategy_key: str) -> RetrievalStrategy:

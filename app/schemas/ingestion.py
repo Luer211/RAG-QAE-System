@@ -9,6 +9,7 @@ class IngestDocumentRequest(BaseModel):
     content_raw: str
 
 
+# Todo: 这个默认的要改掉
 class IngestJobRequest(BaseModel):
     release_id: str
     documents: list[IngestDocumentRequest]
