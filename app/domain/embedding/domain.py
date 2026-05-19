@@ -3,6 +3,7 @@ from hashlib import sha256
 from typing import Protocol
 
 from app.core.errors import InvalidStateError
+from app.infra.embedding import EmbeddingClient
 from app.domain.embedding.models import ChunkEmbedding, EmbedChunksInput, EmbedChunksOutput
 
 
@@ -11,31 +12,37 @@ class EmbeddingStrategy(Protocol):
         ...
 
 
-class MockEmbeddingStrategy:
-    embedding_model = "mock_model"
+# Todo: 我们这里应该是直接使用，嗯model的话固定下来就好了。
+class OpenAIEmbeddingStrategy:
     embedding_dim = 1536
 
+    def __init__(self, client: EmbeddingClient):
+        self.client = client
+        self.model = "open_embedding_small"
+    
     async def embed(self, input_data: EmbedChunksInput) -> EmbedChunksOutput:
-        embeddings = [
-            ChunkEmbedding(
-                chunk_id=chunk.chunk_id,
-                embedding_model=self.embedding_model,
-                embedding_dim=self.embedding_dim,
-                vector=self._vectorize(chunk.content),
-            )
-            for chunk in input_data.chunks
-        ]
-        return EmbedChunksOutput(embeddings=embeddings)
+        vectors = await self.client.embed(
+            texts=[chunk.content for chunk in input_data.chunks],
+            model=self.model,
+        )
 
-    def _vectorize(self, text: str) -> list[float]:
-        digest = sha256(text.encode("utf-8")).digest()
-        return [round(digest[i] / 255, 6) for i in range(self.embedding_dim)]
+        return EmbedChunksOutput(
+            embeddings=[
+                ChunkEmbedding(
+                    chunk_id=chunk.chunk_id,
+                    embedding_model=self.model,
+                    embedding_dim=self.embedding_dim,
+                    vector=vector
+                )
+                for chunk, vector in zip[input_data.chunks, vectors]
+            ]
+        )
 
 
 class EmbeddingStrategyFactory:
-    def __init__(self) -> None:
+    def __init__(self, embedding_client: EmbeddingClient) -> None:
         self._strategies: dict[str, EmbeddingStrategy] = {
-            "mock_model": MockEmbeddingStrategy(),
+            "open_ai_model": OpenAIEmbeddingStrategy(embedding_client),
         }
 
     def get(self, strategy_key: str) -> EmbeddingStrategy:

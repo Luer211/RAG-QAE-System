@@ -1,5 +1,7 @@
 ﻿from __future__ import annotations
 from app.repository.db import SessionLocal
+from app.core.config import get_settings
+from app.infra.embedding import EmbeddingClient
 from app.repository.dao.document_dao import DocumentDao
 from app.repository.dao.chunk_dao import ChunkDao
 from app.repository.dao.embedding_dao import EmbeddingDao
@@ -43,6 +45,12 @@ from app.steps.retrieval import (
     RewriteQueryStep,
 )
 
+settings = get_settings()
+
+embedding_client = EmbeddingClient(
+    base_url=settings.embedding_base_url,
+    api_key=settings.embedding_api_key,
+)
 
 release_dao = ReleaseDao(SessionLocal)
 partition_dao = PartitionDao(SessionLocal)
@@ -54,7 +62,7 @@ evaluation_dao = EvaluationDao(SessionLocal)
 
 clean_domain = CleanDomain(CleanerStrategyFactory())
 chunk_domain = ChunkDomain(ChunkerStrategyFactory())
-embed_domain = EmbedDomain(EmbeddingStrategyFactory())
+embed_domain = EmbedDomain(EmbeddingStrategyFactory(embedding_client=embedding_client))
 query_rewrite_domain = QueryRewriteDomain(QueryRewriteStrategyFactory())
 retrieval_domain = RetrievalDomain(RetrievalStrategyFactory())
 rerank_domain = RerankDomain(RerankStrategyFactory())

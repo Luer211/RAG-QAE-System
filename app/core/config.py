@@ -10,6 +10,8 @@ class Settings:
     api_prefix: str
     environment: str
     database_url: str
+    embedding_base_url: str
+    embedding_api_key: str
 
 @lru_cache
 def get_settings() -> Settings:
@@ -17,5 +19,7 @@ def get_settings() -> Settings:
         app_name=os.getenv("APP_NAME"),
         api_prefix=os.getenv("API_PREFIX"),
         environment=os.getenv("APP_ENV"),
-        database_url=os.getenv("DATABASE_URL")
+        database_url=os.getenv("DATABASE_URL"),
+        embedding_base_url=os.getenv("EMBEDDING_BASE_URL"),
+        embedding_api_key=os.getenv("EMBEDDING_API_KEY"),
     )
