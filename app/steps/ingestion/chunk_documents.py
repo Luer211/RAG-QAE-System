@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
-from app.repository.chunk_dao import ChunkDao
-from app.repository.document_dao import DocumentDao
+from app.repository.dao.chunk_dao import ChunkDao
+from app.repository.dao.document_dao import DocumentDao
 from app.repository.records import ChunkCreate
 from app.domain.chunking import ChunkDocumentInput, ChunkDocumentsInput, ChunkDomain
 from app.pipelines.ingestion.models import IngestState

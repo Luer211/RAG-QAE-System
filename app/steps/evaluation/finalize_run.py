@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
 from app.core.enums import EvaluationRunStatus
-from app.repository.evaluation_dao import EvaluationDao
+from app.repository.dao.evaluation_dao import EvaluationDao
 from app.pipelines.evaluation.models import EvaluationState
 
 

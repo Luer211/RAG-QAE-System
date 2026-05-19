@@ -1,5 +1,5 @@
 ﻿from __future__ import annotations
-from app.repository.document_dao import DocumentDao
+from app.repository.dao.document_dao import DocumentDao
 from app.repository.records import DocumentCreate
 from app.domain.cleaning import CleanDocumentsInput, CleanDomain, RawDocument
 from app.pipelines.ingestion.models import IngestState

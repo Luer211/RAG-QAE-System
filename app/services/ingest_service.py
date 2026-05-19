@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
 from app.core.context import new_request_context
-from app.repository.release_dao import ReleaseDao
+from app.repository.dao.release_dao import ReleaseDao
 from app.pipelines.ingestion import IngestDocumentInput, IngestPipeline, IngestPipelineInput
 from app.services.dto.ingestion import IngestServiceInput, IngestServiceOutput
 from app.services.mapping import to_pipeline_config

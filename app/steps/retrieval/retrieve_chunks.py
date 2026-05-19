@@ -1,5 +1,5 @@
 ﻿from __future__ import annotations
-from app.repository.chunk_dao import ChunkDao
+from app.repository.dao.chunk_dao import ChunkDao
 from app.domain.retrieval import RetrievalCandidate, RetrievalDomain, RetrieveChunksInput
 from app.pipelines.retrieval.models import RetrievalState
 

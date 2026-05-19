@@ -1,12 +1,12 @@
 ﻿from __future__ import annotations
-from app.repository.chunk_dao import ChunkDao
 from app.repository.db import SessionLocal
-from app.repository.document_dao import DocumentDao
-from app.repository.embedding_dao import EmbeddingDao
-from app.repository.evaluation_dao import EvaluationDao
-from app.repository.partition_dao import PartitionDao
-from app.repository.release_dao import ReleaseDao
-from app.repository.retrieval_log_dao import RetrievalLogDao
+from app.repository.dao.document_dao import DocumentDao
+from app.repository.dao.chunk_dao import ChunkDao
+from app.repository.dao.embedding_dao import EmbeddingDao
+from app.repository.dao.evaluation_dao import EvaluationDao
+from app.repository.dao.partition_dao import PartitionDao
+from app.repository.dao.release_dao import ReleaseDao
+from app.repository.dao.retrieval_log_dao import RetrievalLogDao
 from app.domain.chunking import ChunkDomain, ChunkerStrategyFactory
 from app.domain.cleaning import CleanDomain, CleanerStrategyFactory
 from app.domain.embedding import EmbedDomain, EmbeddingStrategyFactory

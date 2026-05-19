@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
 from app.core.context import new_request_context
-from app.repository.evaluation_dao import EvaluationDao
+from app.repository.dao.evaluation_dao import EvaluationDao
 from app.repository.records import (
     EvaluationDatasetRecord,
     EvaluationItemRecord,
@@ -9,7 +9,7 @@ from app.repository.records import (
     EvaluationQuestionRecord,
     EvaluationRunRecord,
 )
-from app.repository.release_dao import ReleaseDao
+from app.repository.dao.release_dao import ReleaseDao
 from app.pipelines.evaluation import EvaluationPipeline, EvaluationPipelineInput
 from app.services.dto.evaluation import (
     AddQuestionServiceInput,

@@ -1,7 +1,7 @@
 ﻿from __future__ import annotations
 from dataclasses import asdict
 
-from app.repository.retrieval_log_dao import RetrievalLogDao
+from app.repository.dao.retrieval_log_dao import RetrievalLogDao
 from app.pipelines.retrieval.models import RetrievalState
 
 

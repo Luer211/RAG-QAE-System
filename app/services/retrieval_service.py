@@ -1,8 +1,8 @@
 ﻿from __future__ import annotations
 from app.core.context import new_request_context
 from app.repository.records import AnswerCitationRecord, RetrievalItemRecord, RetrievalLogRecord
-from app.repository.release_dao import ReleaseDao
-from app.repository.retrieval_log_dao import RetrievalLogDao
+from app.repository.dao.release_dao import ReleaseDao
+from app.repository.dao.retrieval_log_dao import RetrievalLogDao
 from app.pipelines.retrieval import RetrievalPipeline, RetrievalPipelineInput
 from app.services.dto.retrieval import (
     CitationServiceOutput,

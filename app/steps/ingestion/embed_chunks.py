@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
-from app.repository.chunk_dao import ChunkDao
-from app.repository.embedding_dao import EmbeddingDao
+from app.repository.dao.chunk_dao import ChunkDao
+from app.repository.dao.embedding_dao import EmbeddingDao
 from app.repository.records import EmbeddingCreate
 from app.domain.embedding import EmbedChunkInput, EmbedChunksInput, EmbedDomain
 from app.pipelines.ingestion.models import IngestState
