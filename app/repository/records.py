@@ -75,7 +75,7 @@ class ChunkEmbeddingRecord:
 
 
 @dataclass
-class VectorSearchRedord:
+class VectorSearchRecord:
     chunk_id: str
     content: str
     distance: float

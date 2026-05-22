@@ -253,16 +253,11 @@ RAG-QAE-System/
 │   │   ├── generation/          # 答案生成策略
 │   │   └── judging/             # 评测裁判策略
 │   │
-│   ├── dao/                     # Dao 层，只处理数据库访问
+│   ├── repository/              # repo 层，只处理数据库访问
 │   │   ├── db.py                # pgsql数据库连接
-│   │   ├── session.py           # 会话管理
-│   │   ├── release_dao.py       # knowledge_releases 表访问
-│   │   ├── document_dao.py      # documents 分区表访问
-│   │   ├── chunk_dao.py         # chunks 分区表访问
-│   │   ├── embedding_dao.py     # chunk_embeddings 分区表访问
-│   │   ├── retrieval_log_dao.py # retrieval_logs/items/citations 访问
-│   │   ├── evaluation_dao.py    # evaluation 相关表访问
-│   │   └── partition_dao.py     # 按 release_id 创建分区
+│   │   ├── records.py           # 数据结构定义
+│   │   ├── models/              # ORM表定义
+│   │   └── dao/                 # 数据库操作
 │   │
 │   └── infra/                   # 外部基础设施适配
 │       ├── llm/                 # 大模型调用封装
