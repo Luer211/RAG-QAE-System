@@ -2,6 +2,7 @@
 from app.repository.db import SessionLocal
 from app.core.config import get_settings
 from app.infra.embedding import EmbeddingClient
+from app.infra.llm import LLMClient
 from app.repository.dao.document_dao import DocumentDao
 from app.repository.dao.chunk_dao import ChunkDao
 from app.repository.dao.embedding_dao import EmbeddingDao
@@ -52,6 +53,11 @@ embedding_client = EmbeddingClient(
     api_key=settings.embedding_api_key,
 )
 
+llm_client = LLMClient(
+    base_url=settings.llm_base_url,
+    api_key=settings.llm_api_key,
+)
+
 release_dao = ReleaseDao(SessionLocal)
 partition_dao = PartitionDao(SessionLocal)
 document_dao = DocumentDao(SessionLocal)
@@ -75,7 +81,11 @@ retrieval_domain = RetrievalDomain(
     )
 )
 rerank_domain = RerankDomain(RerankStrategyFactory())
-generation_domain = GenerationDomain(GenerationStrategyFactory())
+generation_domain = GenerationDomain(
+    GenerationStrategyFactory(
+        llm_client=llm_client
+    )
+)
 judge_domain = JudgeDomain(JudgeStrategyFactory())
 
 ingest_pipeline = IngestPipeline(
