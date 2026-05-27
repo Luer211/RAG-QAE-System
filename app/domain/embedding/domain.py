@@ -12,13 +12,13 @@ class EmbeddingStrategy(Protocol):
         ...
 
 
-# Todo: 我们这里应该是直接使用，嗯model的话固定下来就好了。
+# Todo：做业务错误判断
 class OpenAIEmbeddingStrategy:
+    model = "text-embedding-3-small"
     embedding_dim = 1536
 
     def __init__(self, client: EmbeddingClient):
         self.client = client
-        self.model = "open_embedding_small"
     
     async def embed(self, input_data: EmbedChunksInput) -> EmbedChunksOutput:
         vectors = await self.client.embed(
@@ -42,7 +42,7 @@ class OpenAIEmbeddingStrategy:
 class EmbeddingStrategyFactory:
     def __init__(self, embedding_client: EmbeddingClient) -> None:
         self._strategies: dict[str, EmbeddingStrategy] = {
-            "open_ai_model": OpenAIEmbeddingStrategy(embedding_client),
+            "openai_text_embedding_3_small": OpenAIEmbeddingStrategy(embedding_client),
         }
 
     def get(self, strategy_key: str) -> EmbeddingStrategy:

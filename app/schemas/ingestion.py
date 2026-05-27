@@ -9,17 +9,10 @@ class IngestDocumentRequest(BaseModel):
     content_raw: str
 
 
-# Todo: 这个默认的要改掉
 class IngestJobRequest(BaseModel):
     release_id: str
     documents: list[IngestDocumentRequest]
-    cleaner_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_clean")
-    )
-    chunker_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_chunk")
-    )
-    embedding_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_model")
-    )
+    cleaner_config: StrategyConfig
+    chunker_config: StrategyConfig
+    embedding_config: StrategyConfig
 
