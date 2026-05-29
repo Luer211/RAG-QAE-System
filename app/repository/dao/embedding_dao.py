@@ -46,6 +46,41 @@ class EmbeddingDao:
             embedding_model: str,
             top_k: int,
     ) -> list[VectorSearchRecord]:
-        # Todo: 向量近似搜索
-        return []
-    
+        """余弦相似度检索排序"""
+
+        distance = ChunkEmbeddingOrm.vector.cosine_distance(query_vector).label("distance")
+        score = (1.0 - ChunkEmbeddingOrm.vector.cosine_distance(query_vector)).label("score")
+
+        stmt = (
+            select(
+                ChunkEmbeddingOrm.chunk_id,
+                ChunkOrm.content,
+                distance,
+                score,
+            )
+            .join(
+                ChunkOrm,
+                (ChunkOrm.release_id == ChunkEmbeddingOrm.release_id)
+                & (ChunkOrm.id == ChunkEmbeddingOrm.chunk_id),
+            )
+            .where(
+                ChunkEmbeddingOrm.release_id == release_id,
+                ChunkEmbeddingOrm.embedding_model == embedding_model,
+            )
+            .order_by(distance)
+            .limit(top_k)
+        )
+
+        async with self.session_factory() as session:
+            rows = await session.execute(stmt)
+
+        return [
+            VectorSearchRecord(
+                chunk_id=str(row.chunk_id),
+                content=row.content,
+                distance=float(row.distance),
+                score=float(row.score),
+            )
+            for row in rows
+        ]
+        

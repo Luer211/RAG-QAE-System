@@ -18,7 +18,7 @@ class PgVectorRetrievalStrategy:
         embedding_client: EmbeddingClient,
         embedding_dao: EmbeddingDao,
         # Todo: 这里需要我们考虑一件事情，model的选择究竟应该怎么做
-        embedding_model: str = "open_embedding_small",
+        embedding_model: str = "text-embedding-3-small",
     ):
         self.embedding_client = embedding_client
         self.embedding_dao = embedding_dao
