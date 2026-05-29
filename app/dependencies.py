@@ -98,7 +98,7 @@ ingest_pipeline = IngestPipeline(
 retrieval_pipeline = RetrievalPipeline(
     create_log_step=CreateRetrievalLogStep(retrieval_log_dao),
     rewrite_step=RewriteQueryStep(query_rewrite_domain, retrieval_log_dao),
-    retrieve_step=RetrieveChunksStep(retrieval_domain, chunk_dao),
+    retrieve_step=RetrieveChunksStep(retrieval_domain),
     rerank_step=RerankChunksStep(rerank_domain, retrieval_log_dao),
     generate_step=GenerateAnswerStep(generation_domain, retrieval_log_dao),
 )
@@ -131,4 +131,3 @@ def get_retrieval_service() -> RetrievalService:
 
 def get_evaluation_service() -> EvaluationService:
     return evaluation_service
-

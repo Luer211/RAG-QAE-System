@@ -10,18 +10,10 @@ from app.schemas.common import StrategyConfig
 class RetrievalRequest(BaseModel):
     release_id: str
     query: str
-    rewrite_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_rewrite")
-    )
-    retrieval_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_retrieval")
-    )
-    rerank_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_rerank")
-    )
-    generation_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_gen")
-    )
+    rewrite_config: StrategyConfig
+    retrieval_config: StrategyConfig
+    rerank_config: StrategyConfig
+    generation_config: StrategyConfig
 
 
 class AnswerCitationResponse(BaseModel):
