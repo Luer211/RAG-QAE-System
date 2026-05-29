@@ -5,6 +5,7 @@ from app.infra.embedding.client import EmbeddingClient
 from app.core.errors import InvalidStateError
 from app.domain.retrieval.models import RetrieveChunksInput, RetrieveChunksOutput, RetrievedChunk
 from app.repository.dao.embedding_dao import EmbeddingDao
+from app.repository.dao.chunk_dao import ChunkDao
 
 
 class RetrievalStrategy(Protocol):
@@ -13,6 +14,8 @@ class RetrievalStrategy(Protocol):
 
 
 class PgVectorRetrievalStrategy:
+    """向量检索类"""
+
     def __init__(
         self,
         embedding_client: EmbeddingClient,
@@ -58,13 +61,45 @@ class PgVectorRetrievalStrategy:
         )
 
 
+class TsVectorRetrievalStrategy:
+    """全文检索类"""
+
+    def __init__(self, chunk_dao: ChunkDao):
+        self.chunk_dao = chunk_dao
+
+    async def retrieve(self, input_data: RetrieveChunksInput) -> RetrieveChunksOutput:
+        top_k = int(input_data.config.params.get("top_k", 10))
+
+        rows = await self.chunk_dao.search_full_text_chunks(
+            release_id=input_data.release_id,
+            query=input_data.query,
+            top_k=top_k,
+        )
+
+        return RetrieveChunksOutput(
+            items=[
+                RetrievedChunk(
+                    chunk_id=row.chunk_id,
+                    content=row.content,
+                    source_type="tsvector",
+                    raw_score=row.score,
+                    rank_before_rerank=index + 1,
+                )
+                for index, row in enumerate(rows)
+            ]
+        )
+
+
 class RetrievalStrategyFactory:
-    def __init__(self, embedding_client=None, embedding_dao=None) -> None:
+    def __init__(self, embedding_client=None, embedding_dao=None, chunk_dao=None) -> None:
         self._strategies: dict[str, RetrievalStrategy] = {
             "pgvector_retrieval": PgVectorRetrievalStrategy(
                 embedding_client=embedding_client,
                 embedding_dao=embedding_dao,
-            )
+            ),
+            "tsvector_retrieval": TsVectorRetrievalStrategy(
+                chunk_dao=chunk_dao,
+            ),
         }
 
     def get(self, strategy_key: str) -> RetrievalStrategy:

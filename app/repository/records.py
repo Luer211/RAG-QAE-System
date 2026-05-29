@@ -82,6 +82,12 @@ class VectorSearchRecord:
     score: float
 
 
+@dataclass
+class TextSearchRecord:
+    chunk_id: str
+    content: str
+    score: float
+
 
 @dataclass
 class RetrievalLogRecord:

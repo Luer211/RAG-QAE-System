@@ -34,7 +34,7 @@ class ChunkOrm(Base):
         TSVECTOR,
         Computed("to_tsvector('simple', content)", persisted=True),
         nullable=False,
-      )
+    )
     char_count: Mapped[int] = mapped_column(Integer, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,

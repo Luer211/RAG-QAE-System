@@ -78,6 +78,7 @@ retrieval_domain = RetrievalDomain(
     RetrievalStrategyFactory(
         embedding_client=embedding_client,
         embedding_dao=embedding_dao,
+        chunk_dao=chunk_dao,
     )
 )
 rerank_domain = RerankDomain(RerankStrategyFactory())

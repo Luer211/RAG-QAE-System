@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+from sqlalchemy import text
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from app.core.errors import ConflictError
 from app.core.ids import new_uuid
 from app.repository.models.chunk import ChunkOrm
-from app.repository.records import ChunkCreate, ChunkRecord
+from app.repository.records import ChunkCreate, ChunkRecord, TextSearchRecord
 
 
 class ChunkDao:
@@ -66,6 +67,53 @@ class ChunkDao:
                 )
             )
             return [self._to_record(record) for record in records]
+
+    async def search_full_text_chunks(
+        self,
+        release_id: str,
+        query: str,
+        top_k: int,
+    ) -> list[TextSearchRecord]:
+        """全文检索方法"""
+
+        if not query.strip():
+            return []
+
+        stmt = text(
+            """
+            SELECT
+                id AS chunk_id,
+                content,
+                ts_rank_cd(
+                    search_vector,
+                    websearch_to_tsquery('simple', :query)
+                ) AS score
+            FROM chunks
+            WHERE release_id = :release_id
+            AND search_vector @@ websearch_to_tsquery('simple', :query)
+            ORDER BY score DESC, id
+            LIMIT :top_k
+            """
+        )
+
+        async with self.session_factory() as session:
+            rows = await session.execute(
+                stmt,
+                {
+                    "release_id": release_id,
+                    "query": query,
+                    "top_k": top_k,
+                },
+            )
+
+        return [
+            TextSearchRecord(
+                chunk_id=str(row.chunk_id),
+                content=row.content,
+                score=float(row.score),
+            )
+            for row in rows
+        ]
 
     def _to_record(self, orm: ChunkOrm) -> ChunkRecord:
         return ChunkRecord(
