@@ -18,6 +18,7 @@ class GenerateAnswerStep:
         domain_output = await self.generation_domain.generate(
             GenerateAnswerInput(
                 release_id=state.input.release_id,
+                query=state.runtime.rewrite_query or state.input.query,
                 selected_chunks=state.runtime.selected_chunks,
                 config=state.input.generation_config.to_domain_config(),
             )

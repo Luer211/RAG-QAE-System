@@ -16,6 +16,7 @@ class AnswerCitation:
 @dataclass(frozen=True)
 class GenerateAnswerInput:
     release_id: str
+    query: str
     selected_chunks: list[RerankedChunk]
     config: DomainStrategyConfig
 

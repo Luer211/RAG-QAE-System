@@ -45,21 +45,11 @@ class QuestionResponse(BaseModel):
 class EvaluationRunRequest(BaseModel):
     release_id: str
     dataset_id: str
-    rewrite_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_rewrite")
-    )
-    retrieval_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_retrieval")
-    )
-    rerank_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_rerank")
-    )
-    generation_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_gen")
-    )
-    judge_config: StrategyConfig = Field(
-        default_factory=lambda: StrategyConfig(strategy_key="mock_judge")
-    )
+    rewrite_config: StrategyConfig
+    retrieval_config: StrategyConfig
+    rerank_config: StrategyConfig 
+    generation_config: StrategyConfig
+    judge_config: StrategyConfig
 
 
 class EvaluationRunSubmitResponse(BaseModel):

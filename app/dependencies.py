@@ -68,11 +68,7 @@ evaluation_dao = EvaluationDao(SessionLocal)
 
 clean_domain = CleanDomain(CleanerStrategyFactory())
 chunk_domain = ChunkDomain(ChunkerStrategyFactory())
-embed_domain = EmbedDomain(
-    EmbeddingStrategyFactory(
-        embedding_client=embedding_client
-    )
-)
+embed_domain = EmbedDomain(EmbeddingStrategyFactory(embedding_client=embedding_client))
 query_rewrite_domain = QueryRewriteDomain(QueryRewriteStrategyFactory())
 retrieval_domain = RetrievalDomain(
     RetrievalStrategyFactory(
@@ -82,12 +78,8 @@ retrieval_domain = RetrievalDomain(
     )
 )
 rerank_domain = RerankDomain(RerankStrategyFactory())
-generation_domain = GenerationDomain(
-    GenerationStrategyFactory(
-        llm_client=llm_client
-    )
-)
-judge_domain = JudgeDomain(JudgeStrategyFactory())
+generation_domain = GenerationDomain(GenerationStrategyFactory(llm_client=llm_client))
+judge_domain = JudgeDomain(JudgeStrategyFactory(llm_client=llm_client))
 
 ingest_pipeline = IngestPipeline(
     clean_step=CleanDocumentsStep(clean_domain, document_dao),
