@@ -14,6 +14,7 @@ class JudgeStrategy(Protocol):
 
 
 class LLMRagasLikeJudgeStrategy:
+    # Todo: 完成类RAGAS
     model = "gpt-4o"
 
     def __init__(self, llm_client: LLMClient):
