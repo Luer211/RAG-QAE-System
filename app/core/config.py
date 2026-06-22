@@ -15,8 +15,10 @@ class Settings:
     database_url: str
     embedding_base_url: str
     embedding_api_key: str
+    embedding_model_name: str
     llm_base_url: str
     llm_api_key: str
+    llm_model_name: str
 
 
 @lru_cache
@@ -28,6 +30,8 @@ def get_settings() -> Settings:
         database_url=os.getenv("DATABASE_URL"),
         embedding_base_url=os.getenv("EMBEDDING_BASE_URL"),
         embedding_api_key=os.getenv("EMBEDDING_API_KEY"),
+        embedding_model_name=os.getenv("EMBEDDING_MODEL_NAME"),
         llm_base_url=os.getenv("LLM_BASE_URL"),
         llm_api_key=os.getenv("LLM_API_KEY"),
+        llm_model_name=os.getenv("LLM_MODEL_NAME")
     )

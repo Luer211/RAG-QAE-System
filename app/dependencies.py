@@ -49,13 +49,15 @@ from app.steps.retrieval import (
 settings = get_settings()
 
 embedding_client = EmbeddingClient(
-    base_url=settings.embedding_base_url,
-    api_key=settings.embedding_api_key,
+    embedding_base_url=settings.embedding_base_url,
+    embedding_api_key=settings.embedding_api_key,
+    embedding_model_name=settings.embedding_model_name
 )
 
 llm_client = LLMClient(
-    base_url=settings.llm_base_url,
-    api_key=settings.llm_api_key,
+    llm_base_url=settings.llm_base_url,
+    llm_api_key=settings.llm_api_key,
+    llm_model_name=settings.llm_model_name
 )
 
 release_dao = ReleaseDao(SessionLocal)
