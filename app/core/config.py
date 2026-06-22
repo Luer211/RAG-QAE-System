@@ -2,6 +2,9 @@
 from dataclasses import dataclass
 from functools import lru_cache
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 @dataclass(frozen=True)
@@ -14,6 +17,7 @@ class Settings:
     embedding_api_key: str
     llm_base_url: str
     llm_api_key: str
+
 
 @lru_cache
 def get_settings() -> Settings:
