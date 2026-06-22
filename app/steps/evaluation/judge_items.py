@@ -14,14 +14,16 @@ class JudgeEvaluationItemsStep:
         items = await self.evaluation_dao.list_items(evaluation_run_id)
         questions = await self.evaluation_dao.list_questions(state.input.dataset_id)
         question_map = {question.id: question for question in questions}
-        contexts = [
-            citation.get("content", "")
-            for citation in item.citations_snapshot
-            if citation.get("content")
-        ]
 
         for item in items:
             question = question_map[item.question_id]
+
+            contexts = [
+                citation.get("content", "")
+                for citation in item.citations_snapshot
+                if citation.get("content")
+            ]
+
             judge_output = await self.judge_domain.judge(
                 JudgeAnswerInput(
                     question=question.question_text,
