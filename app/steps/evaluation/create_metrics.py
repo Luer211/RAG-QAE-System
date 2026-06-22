@@ -11,7 +11,7 @@ class CreateEvaluationMetricsStep:
         evaluation_run_id = state.runtime.evaluation_run_id or ""
         items = await self.evaluation_dao.list_items(evaluation_run_id)
         scores = [
-            float(item.judge_result.get("score", 0.0))
+            float(item.judge_result.get("overall_score", 0.0))
             for item in items
             if item.judge_result
         ]

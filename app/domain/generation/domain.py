@@ -35,7 +35,7 @@ class LLMGenerationStrategy:
             {
                 "role": "user",
                 "content": (
-                    "Context:\n{input_data.query}\n\n"
+                    f"Context:\n{input_data.query}\n\n"
                     f"{context}\n\n"
                     "Generate a concise answer based on the context."
                 ),
